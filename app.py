@@ -22,9 +22,16 @@ def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
-# Konfigurasi MongoDB
-client = MongoClient('mongodb://localhost:27017/')
+# # Konfigurasi MongoDB
+# client = MongoClient('mongodb://localhost:27017/')
+# db = client['booking_wisata_db']
+
+import os
+MONGO_URI = os.getenv('MONGO_URI', 'mongodb+srv://Shadiq:Shadiq2172@shadiq.lendtqt.mongodb.net/?retryWrites=true&w=majority&appName=shadiq')
+client = MongoClient(MONGO_URI)
 db = client['booking_wisata_db']
+
+
 
 # Koleksi-koleksi MongoDB
 users_col = db['users']
@@ -469,4 +476,4 @@ if __name__ == '__main__':
         os.makedirs(UPLOAD_FOLDER)
         print(f"Folder '{UPLOAD_FOLDER}' dibuat.")
 
-    app.run(debug=True, port=5000)
+    app.run(debug=False, host='0.0.0.0', port=os.environ.get('PORT', 5000))
