@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block title %}Register{% endblock %}
+
+{% block content %}
+    <div class="auth-card"> {# Tambahkan div ini #}
+        <h2>Registrasi Pengguna Baru</h2>
+        <form method="POST">
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" value="{{ username if username }}" required>
+
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required>
+
+            {# Hidden field untuk role default 'user' #}
+            <input type="hidden" name="role" value="user"> 
+
+            <button type="submit">Register</button>
+        </form>
+        <p>Sudah punya akun? <a href="{{ url_for('login') }}">Login di sini</a>.</p>
+    </div> {# Tutup div ini #}
+{% endblock %}

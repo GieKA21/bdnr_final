@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block title %}Daftar Tempat Wisata{% endblock %}
+
+{% block content %}
+    <h2>Daftar Tempat Wisata</h2>
+
+    <form method="GET" action="{{ url_for('places_list') }}" class="filter-search-controls">
+        <div>
+            <label for="category_filter">Filter Kategori:</label>
+            <select id="category_filter" name="category">
+                <option value="all">Semua Kategori</option>
+                {% for category in categories %}
+                    <option value="{{ category }}" {% if selected_category == category %}selected{% endif %}>{{ category }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div>
+            <label for="search_query">Cari Nama/Lokasi:</label>
+            <input type="text" id="search_query" name="q" placeholder="Cari nama atau lokasi..." value="{{ search_query if search_query }}">
+        </div>
+        <button type="submit">Cari & Filter</button>
+    </form>
+
+    <div class="places-grid">
+        {% for place in places %}
+        <div class="place-card">
+            <img src="{{ place.image_url }}" alt="Gambar {{ place.name }}" onerror="this.onerror=null;this.src='https://placehold.co/400x300/a7b7c2/FFFFFF?text=No+Image';">
+            <div class="place-card-content">
+                <h3>{{ place.name }}</h3>
+                <p><strong>Lokasi:</strong> {{ place.location }}</p>
+                <p><strong>Kategori:</strong> {{ place.category }}</p>
+                <p><strong>Deskripsi:</strong> {{ place.description[:100] }}...</p>
+                <p class="price">Harga/Orang: Rp {{ '{:,.2f}'.format(place.price_per_person | float) }}</p>
+            </div>
+            <div class="place-card-actions">
+                <a href="{{ url_for('place_detail', id=place._id) }}" class="btn">Lihat Detail</a>
+                {% if session.get('role') == 'admin' %}
+                    <a href="{{ url_for('edit_place', id=place._id) }}" class="btn edit-btn">Edit</a>
+                    <a href="{{ url_for('delete_place', id=place._id) }}" class="btn delete-btn" onclick="return confirm('Apakah Anda yakin ingin menghapus tempat wisata ini? Semua booking terkait juga akan dihapus.');">Hapus</a>
+                {% endif %}
+            </div>
+        </div>
+        {% else %}
+        <p>Belum ada tempat wisata yang terdaftar atau tidak ada hasil untuk pencarian Anda.</p>
+        {% endfor %}
+    </div>
+{% endblock %}

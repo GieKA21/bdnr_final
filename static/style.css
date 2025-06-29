@@ -1,0 +1,641 @@
+/* Reset dan Base Styles */
+body {
+    font-family: 'Segoe UI', 'Inter', Tahoma, Geneva, Verdana, sans-serif; /* Added Inter for a modern look if available */
+    margin: 0;
+    padding: 0;
+    background-color: #f8f9fa; /* Very light gray/off-white for clean background */
+    color: #343a40; /* Dark charcoal text for good contrast */
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 30px;
+    background-color: #ffffff; /* Pure white content background */
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08); /* Softer, slightly larger shadow */
+}
+
+/* Header - Mirip Booking.com */
+header {
+    background-color: #003580; /* Deep blue, common in Booking.com */
+    color: #fff;
+    padding: 15px 30px; /* Sedikit lebih kecil dari sebelumnya untuk header */
+    border-radius: 0; /* No border radius on header for full width feel */
+    margin-bottom: 0; /* No margin-bottom, content starts right below */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: sticky; /* Membuat header tetap di atas saat scroll */
+    top: 0;
+    z-index: 1000; /* Memastikan header di atas elemen lain */
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2); /* Shadow untuk efek melayang */
+}
+
+header h1 {
+    margin: 0;
+    font-size: 2.2em; /* Slightly larger title */
+    font-weight: 700; /* Bold for app name */
+    color: #fff;
+    flex-grow: 1; /* Biarkan judul mengambil ruang sebanyak mungkin */
+}
+
+header nav ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    gap: 15px; /* Jarak antar item navigasi */
+    align-items: center; /* Selaraskan item secara vertikal */
+}
+
+/* Gaya umum untuk semua link navigasi di header */
+header nav ul li a {
+    color: #e0f2f7; /* Lighter blue for navigation links */
+    text-decoration: none;
+    padding: 8px 12px; /* Padding lebih kecil untuk link biasa */
+    border-radius: 4px;
+    transition: background-color 0.3s ease, color 0.3s ease, border 0.3s ease;
+    font-weight: 500;
+    border: 1px solid transparent; /* Default transparent border */
+    white-space: nowrap; /* Mencegah teks pecah baris */
+}
+
+header nav ul li a:hover {
+    background-color: #00224d; /* Darker blue on hover */
+    color: #fff;
+    border-color: #fff; /* White border on hover */
+}
+
+/* Styling khusus untuk tombol Login/Register seperti di Booking.com */
+header nav ul li a[href*="login"],
+header nav ul li a[href*="register"] { /* Menggunakan *="login" dan *="register" untuk fleksibilitas */
+    background-color: #ffffff; /* Latar belakang putih */
+    color: #003580; /* Teks biru gelap */
+    padding: 8px 18px; /* Padding seperti tombol */
+    border-radius: 4px; /* Sudut tombol lebih tegas */
+    border: 1px solid #ffffff; /* Border putih */
+    font-weight: 600;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1); /* Bayangan lembut */
+    margin-left: 10px; /* Jarak dari link sebelumnya */
+}
+
+header nav ul li a[href*="login"]:hover,
+header nav ul li a[href*="register"]:hover {
+    background-color: #e0f2f7; /* Biru muda saat hover */
+    color: #003580;
+    border-color: #e0f2f7;
+}
+
+/* Typography */
+h1, h2, h3 {
+    color: #003580; /* Deep blue for headings */
+    margin-top: 30px;
+    margin-bottom: 20px;
+    font-weight: 600;
+}
+
+h2 {
+    font-size: 2em;
+}
+
+h3 {
+    font-size: 1.6em;
+}
+
+p {
+    color: #495057; /* Slightly lighter gray for body text */
+}
+
+/* Forms */
+form {
+    background-color: #ffffff; /* White background for forms */
+    padding: 25px;
+    border-radius: 8px;
+    margin-bottom: 30px;
+    border: 1px solid #dee2e6; /* Light gray border */
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #495057;
+}
+
+input::placeholder,
+textarea::placeholder,
+select::placeholder {
+    color: #adb5bd;
+}
+
+input,
+textarea,
+select {
+    width: calc(100% - 22px);
+    padding: 12px;
+    margin-bottom: 20px;
+    border: 1px solid #ced4da;
+    border-radius: 5px;
+    box-sizing: border-box;
+    font-family: inherit;
+    font-size: 1em;
+    color: #495057;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 0 0.25rem rgba(0, 123, 255, 0.25);
+}
+
+/* Buttons */
+button, .btn {
+    display: inline-block;
+    background-color: #007bff; /* Bright blue primary button */
+    color: white;
+    padding: 12px 25px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1.05em;
+    font-family: inherit;
+    text-decoration: none;
+    transition: background-color 0.3s ease, transform 0.1s ease;
+    margin-right: 15px;
+    font-weight: 500;
+}
+
+button:hover, .btn:hover {
+    background-color: #0056b3; /* Darker blue on hover */
+    transform: translateY(-1px);
+}
+
+button:active, .btn:active {
+    transform: translateY(0);
+}
+
+.btn.edit-btn {
+    background-color: #28a745; /* Green for edit */
+}
+
+.btn.edit-btn:hover {
+    background-color: #218838;
+}
+
+.btn.delete-btn {
+    background-color: #dc3545; /* Red for delete */
+}
+
+.btn.delete-btn:hover {
+    background-color: #c82333;
+}
+
+/* Flash Messages */
+.message {
+    padding: 15px;
+    margin-bottom: 25px;
+    border-radius: 5px;
+    font-weight: bold;
+    text-align: center;
+    opacity: 1;
+    transition: opacity 0.5s ease-out;
+}
+
+.message.success {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+.message.error {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
+.message.info {
+    background-color: #d1ecf1;
+    color: #0c5460;
+    border: 1px solid #bee5eb;
+}
+
+/* Card Layout for Places */
+.places-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 30px;
+    margin-top: 30px;
+}
+
+.place-card {
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+    overflow: hidden;
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+
+.place-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+.place-card img {
+    width: 100%;
+    height: 220px;
+    object-fit: cover;
+    display: block;
+    border-bottom: 1px solid #eee;
+}
+
+.place-card-content {
+    padding: 20px;
+}
+
+.place-card-content h3 {
+    margin-top: 0;
+    margin-bottom: 10px;
+    font-size: 1.4em;
+    color: #003580;
+}
+
+.place-card-content p {
+    font-size: 0.9em;
+    color: #6c757d;
+    margin-bottom: 15px;
+}
+
+.place-card-content .price {
+    font-weight: bold;
+    color: #007bff;
+    font-size: 1.2em;
+    margin-top: 10px;
+}
+
+.place-card-actions {
+    padding: 15px 20px;
+    border-top: 1px solid #e9ecef;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Filter and Search Controls (Inspired by Booking.com search bar) */
+.filter-search-controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-bottom: 30px;
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 8px;
+    border: 1px solid #ced4da;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    align-items: flex-end;
+}
+
+.filter-search-controls > div {
+    flex: 1;
+    min-width: 200px;
+}
+
+.filter-search-controls label {
+    margin-bottom: 5px;
+    font-size: 0.9em;
+    color: #555;
+    font-weight: 500;
+}
+
+.filter-search-controls input,
+.filter-search-controls select {
+    margin-bottom: 0;
+}
+
+.filter-search-controls button {
+    margin-top: 0;
+    margin-right: 0;
+    align-self: flex-end;
+    padding: 12px 25px;
+    background-color: #007bff;
+}
+
+
+/* Table Styling for My Bookings */
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 25px;
+    background-color: #ffffff;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.data-table th, .data-table td {
+    padding: 15px;
+    text-align: left;
+    border-bottom: 1px solid #e9ecef;
+    color: #495057;
+}
+
+.data-table th {
+    background-color: #e9ecef;
+    color: #343a40;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.9em;
+}
+
+.data-table tbody tr:nth-child(even) {
+    background-color: #f8f9fa;
+}
+
+.data-table tbody tr:hover {
+    background-color: #e2f4ff;
+    cursor: pointer;
+}
+
+.data-table .actions a {
+    margin-right: 10px;
+    padding: 8px 12px;
+}
+
+/* Booking Summary */
+.booking-summary {
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 30px;
+    border: 1px solid #dee2e6;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 20px;
+}
+
+.summary-card {
+    background-color: #e2f4ff; /* Very light blue for summary cards */
+    padding: 15px;
+    border-radius: 5px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    text-align: center;
+    border: 1px solid #b3e0ff; /* Subtle blue border */
+}
+
+.summary-card h3 {
+    margin-top: 0;
+    color: #003580;
+    font-size: 1.1em;
+    font-weight: 600;
+}
+
+.summary-card p {
+    font-size: 1.6em;
+    font-weight: bold;
+    color: #007bff;
+    margin: 5px 0 0 0;
+}
+
+/* Footer */
+footer {
+    text-align: center;
+    padding: 25px;
+    margin-top: 50px;
+    color: #6c757d;
+    border-top: 1px solid #e9ecef;
+    font-size: 0.9em;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .container {
+        padding: 15px;
+        margin: 20px auto;
+    }
+    header {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 15px;
+    }
+    header nav ul {
+        margin-top: 15px;
+        gap: 10px;
+        flex-wrap: wrap;
+    }
+    .filter-search-controls {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 15px;
+        padding: 15px;
+    }
+    .places-grid {
+        grid-template-columns: 1fr;
+    }
+    .booking-summary {
+        grid-template-columns: 1fr;
+    }
+    .btn, button {
+        width: 100%;
+        margin-right: 0;
+        margin-bottom: 10px;
+    }
+    .data-table th, .data-table td {
+        padding: 10px;
+    }
+}
+
+/* Specific Styling for Select Options (to try and override browser defaults) */
+select option {
+    background-color: #ffffff;
+    color: #343a40;
+    font-family: inherit;
+    padding: 8px 15px;
+}
+
+select option:hover,
+select option:checked {
+    background-color: #e0f2f7 !important; /* Light blue hover */
+    color: #343a40 !important;
+}
+
+/* Ensure focus rings are clean and match theme */
+input:focus,
+textarea:focus,
+select:focus,
+button:focus,
+.btn:focus {
+    outline: none;
+    border-color: #007bff !important;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25) !important;
+}
+
+.modal {
+    display: none; /* Sembunyikan secara default */
+    position: fixed; /* Tetap di posisi saat scroll */
+    z-index: 2000; /* Di atas semua konten lain */
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto; /* Aktifkan scroll jika konten terlalu besar */
+    background-color: rgba(0, 0, 0, 0.6); /* Hitam transparan sebagai overlay */
+    justify-content: center; /* Pusatkan secara horizontal */
+    align-items: center; /* Pusatkan secara vertikal */
+}
+
+.modal-content {
+    background-color: #ffffff; /* Latar putih untuk konten modal */
+    margin: auto; /* Auto margin untuk centering (saat display:block) */
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2); /* Bayangan lebih kuat */
+    width: 90%;
+    max-width: 450px; /* Lebar maksimum modal */
+    text-align: center; /* Teks di tengah */
+    animation: fadeIn 0.3s ease-out; /* Animasi fade-in */
+}
+
+.modal-content h3 {
+    color: #003580; /* Warna judul modal */
+    margin-top: 0;
+    margin-bottom: 15px;
+    font-size: 1.6em;
+}
+
+.modal-content p {
+    color: #495057; /* Warna teks pesan */
+    margin-bottom: 25px;
+    font-size: 1.1em;
+}
+
+.modal-actions {
+    display: flex;
+    justify-content: center; /* Pusatkan tombol */
+    gap: 15px; /* Jarak antar tombol */
+    margin-top: 20px;
+}
+
+.modal-actions .btn {
+    padding: 10px 25px;
+    font-size: 1em;
+    margin-right: 0; /* Hapus margin kanan default .btn */
+}
+
+/* Gaya khusus untuk tombol Ya/Konfirmasi di modal */
+.modal-actions .confirm-yes-btn {
+    background-color: #007bff; /* Biru terang */
+}
+
+.modal-actions .confirm-yes-btn:hover {
+    background-color: #0056b3;
+}
+
+/* Gaya khusus untuk tombol Tidak/Batal di modal */
+.modal-actions .confirm-no-btn {
+    background-color: #6c757d; /* Abu-abu */
+}
+
+.modal-actions .confirm-no-btn:hover {
+    background-color: #5a6268;
+}
+
+/* Animasi Fade In */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* --- Akhir Gaya Modal Popup --- */
+
+
+/* Responsive Adjustments (pastikan modal juga responsif) */
+@media (max-width: 768px) {
+    /* ... (CSS responsive yang sudah ada) ... */
+    .modal-content {
+        width: 95%; /* Lebih lebar di layar kecil */
+        padding: 20px;
+    }
+    .modal-actions {
+        flex-direction: column; /* Tombol berbaris di layar kecil */
+        gap: 10px;
+    }
+    .modal-actions .btn {
+        width: 100%; /* Tombol penuh lebar di layar kecil */
+    }
+}
+
+.auth-card {
+    background-color: #ffffff; /* Latar putih */
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); /* Bayangan lebih jelas */
+    width: 90%; /* Lebar di layar kecil */
+    max-width: 450px; /* Lebar maksimum */
+    margin: 50px auto; /* Pusatkan secara horizontal, beri jarak dari atas */
+    text-align: center; /* Pusatkan teks */
+}
+
+.auth-card h2 {
+    margin-top: 0;
+    margin-bottom: 25px;
+    color: #003580; /* Warna judul */
+    font-size: 1.8em;
+}
+
+.auth-card form {
+    background-color: transparent; /* Hilangkan background form agar auth-card yang terlihat */
+    border: none; /* Hilangkan border form */
+    box-shadow: none; /* Hilangkan shadow form */
+    padding: 0; /* Hilangkan padding form */
+}
+
+.auth-card label {
+    text-align: left; /* Teks label sejajar kiri */
+    margin-bottom: 5px;
+    color: #343a40; /* Warna teks label */
+}
+
+.auth-card input {
+    margin-bottom: 15px; /* Jarak antar input */
+}
+
+.auth-card button {
+    width: 100%; /* Tombol penuh lebar */
+    padding: 12px;
+    margin-top: 20px; /* Jarak dari input terakhir */
+}
+
+.auth-card p {
+    margin-top: 20px;
+    color: #495057;
+}
+
+.auth-card p a {
+    color: #007bff; /* Warna link */
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.auth-card p a:hover {
+    text-decoration: underline;
+}
+
+/* --- Akhir Gaya Kartu Autentikasi --- */
+
+
+/* Responsive Adjustments (pastikan .auth-card juga responsif) */
+@media (max-width: 768px) {
+    /* ... (CSS responsive yang sudah ada) ... */
+    .auth-card {
+        margin: 30px auto; /* Kurangi margin atas di layar kecil */
+        padding: 20px;
+    }
+}

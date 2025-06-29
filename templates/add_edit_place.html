@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block title %}{% if place %}Edit Tempat Wisata{% else %}Tambah Tempat Wisata Baru{% endif %}{% endblock %}
+
+{% block content %}
+    <h2>{% if place %}Edit Tempat Wisata{% else %}Tambah Tempat Wisata Baru{% endif %}</h2>
+
+    {# Penting: Tambahkan enctype="multipart/form-data" untuk upload file #}
+    <form method="POST" enctype="multipart/form-data"> 
+        <label for="name">Nama Tempat Wisata:</label>
+        <input type="text" id="name" name="name" value="{{ place.name if place }}" required>
+
+        <label for="location">Lokasi:</label>
+        <input type="text" id="location" name="location" value="{{ place.location if place }}" required>
+
+        <label for="description">Deskripsi:</label>
+        <textarea id="description" name="description" rows="5" required>{{ place.description if place }}</textarea>
+
+        <label for="price_per_person">Harga Per Orang (Rp):</label>
+        <input type="number" id="price_per_person" name="price_per_person" step="0.01" min="0" value="{{ place.price_per_person if place }}" required>
+
+        {# --- Perubahan di sini: Menggunakan input type="file" --- #}
+        <label for="image_file">Unggah Gambar (JPG, PNG, GIF - Opsional):</label>
+        <input type="file" id="image_file" name="image_file" accept=".jpg, .jpeg, .png, .gif">
+        <small style="color:#6c757d;">Pilih file gambar untuk diunggah. Jika tidak diunggah, akan menggunakan gambar default.</small>
+        
+        {% if place and place.image_url %}
+            <div style="margin-top: 15px; margin-bottom: 20px;">
+                <p style="margin-bottom: 5px;">Gambar saat ini:</p>
+                <img src="{{ place.image_url }}" alt="Gambar Saat Ini" style="max-width: 200px; height: auto; border-radius: 5px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);" onerror="this.onerror=null;this.src='https://placehold.co/200x150/a7b7c2/FFFFFF?text=No+Image';">
+            </div>
+        {% endif %}
+        {# --- Akhir Perubahan Input File --- #}
+
+        <label for="category">Kategori:</label>
+        <select id="category" name="category" required>
+            <option value="">-- Pilih Kategori --</option>
+            <option value="Pantai" {% if place and place.category == 'Pantai' %}selected{% endif %}>Pantai</option>
+            <option value="Pegunungan" {% if place and place.category == 'Pegunungan' %}selected{% endif %}>Pegunungan</option>
+            <option value="Kota" {% if place and place.category == 'Kota' %}selected{% endif %}>Kota</option>
+            <option value="Sejarah" {% if place and place.category == 'Sejarah' %}selected{% endif %}>Sejarah</option>
+            <option value="Kuliner" {% if place and place.category == 'Kuliner' %}selected{% endif %}>Kuliner</option>
+            <option value="Petualangan" {% if place and place.category == 'Petualangan' %}selected{% endif %}>Petualangan</option>
+        </select>
+
+        <button type="submit">{% if place %}Perbarui Tempat{% else %}Tambah Tempat{% endif %}</button>
+        <a href="{{ url_for('places_list') }}" class="btn">Batal</a>
+    </form>
+{% endblock %}

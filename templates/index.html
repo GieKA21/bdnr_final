@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block title %}Beranda{% endblock %}
+
+{% block content %}
+    <h2>Selamat Datang di Aplikasi Booking Tempat Wisata</h2>
+    <p>Temukan dan pesan tempat wisata impian Anda dengan mudah!</p>
+    <p>Kami menawarkan berbagai destinasi menakjubkan untuk pengalaman liburan yang tak terlupakan.</p>
+
+    <div style="margin-top: 30px; text-align: center;">
+        <h3>Mulai Petualangan Anda Sekarang!</h3>
+        <a href="{{ url_for('places_list') }}" class="btn">Jelajahi Tempat Wisata</a>
+        {% if 'user_id' not in session %}
+            <a href="{{ url_for('register') }}" class="btn">Daftar Sekarang</a>
+        {% endif %}
+    </div>
+
+    <div style="margin-top: 40px; text-align: center;">
+        <img src="https://placehold.co/600x350/ffebee/ad1457?text=Selamat+Berlibur" alt="Gambar Selamat Datang" style="max-width: 100%; height: auto; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
+    </div>
+
+{% endblock %}

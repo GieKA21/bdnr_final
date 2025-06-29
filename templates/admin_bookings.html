@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+
+{% block title %}Kelola Booking{% endblock %}
+
+{% block content %}
+    <h2>Kelola Booking (Admin)</h2>
+
+    <div class="booking-summary">
+        <div class="summary-card">
+            <h3>Total Semua Booking</h3>
+            <p>{{ booking_summary.get('confirmed', 0) + booking_summary.get('pending', 0) + booking_summary.get('cancelled', 0) }}</p>
+        </div>
+        <div class="summary-card">
+            <h3>Booking Menunggu Konfirmasi</h3>
+            <p style="color: #ffc107;">{{ booking_summary.get('pending', 0) }}</p>
+        </div>
+        <div class="summary-card">
+            <h3>Booking Dikonfirmasi</h3>
+            <p style="color: #28a745;">{{ booking_summary.get('confirmed', 0) }}</p>
+        </div>
+        <div class="summary-card">
+            <h3>Booking Dibatalkan</h3>
+            <p style="color: #dc3545;">{{ booking_summary.get('cancelled', 0) }}</p>
+        </div>
+    </div>
+
+    {% if bookings %}
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>Pengguna</th>
+                    <th>Tempat Wisata</th>
+                    <th>Tanggal Booking</th>
+                    <th>Jumlah Orang</th>
+                    <th>Total Harga</th>
+                    <th>Status</th>
+                    <th>Aksi Admin</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for booking in bookings %}
+                <tr>
+                    <td>{{ booking.user_details.username }}</td>
+                    <td>{{ booking.place_details.name }}</td>
+                    <td>{{ booking.booking_date.strftime('%d-%m-%Y') }}</td>
+                    <td>{{ booking.num_people }}</td>
+                    <td>Rp {{ '{:,.2f}'.format(booking.total_price | float) }}</td>
+                    <td>
+                        {% if booking.status == 'confirmed' %}
+                            <span style="color: #28a745; font-weight: bold;">Dikonfirmasi</span>
+                        {% elif booking.status == 'pending' %}
+                            <span style="color: #ffc107; font-weight: bold;">Tertunda</span>
+                        {% elif booking.status == 'cancelled' %}
+                            <span style="color: #dc3545; font-weight: bold;">Dibatalkan</span>
+                        {% else %}
+                            {{ booking.status }}
+                        {% endif %}
+                    </td>
+                    <td class="actions">
+                        {% if booking.status == 'pending' %}
+                            <a href="{{ url_for('update_booking_status', booking_id=booking._id, status='confirmed') }}" 
+                               class="btn edit-btn" 
+                               onclick="return confirm('Konfirmasi booking ini?');">Konfirmasi</a>
+                            <a href="{{ url_for('update_booking_status', booking_id=booking._id, status='cancelled') }}" 
+                               class="btn delete-btn" 
+                               onclick="return confirm('Batalkan booking ini?');">Batal</a>
+                        {% elif booking.status == 'confirmed' %}
+                            <a href="{{ url_for('update_booking_status', booking_id=booking._id, status='cancelled') }}" 
+                               class="btn delete-btn" 
+                               onclick="return confirm('Apakah Anda yakin ingin membatalkan booking yang sudah dikonfirmasi ini?');">Batalkan</a>
+                        {% else %}
+                            -
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>Belum ada booking yang terdaftar.</p>
+    {% endif %}
+{% endblock %}

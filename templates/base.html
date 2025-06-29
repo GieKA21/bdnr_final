@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Booking Wisata - {% block title %}{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <header>
+        <h1><a href="{{ url_for('home') }}" style="color:white; text-decoration: none;">Booking Wisata</a></h1>
+        <nav>
+            <ul>
+                <li><a href="{{ url_for('places_list') }}">Tempat Wisata</a></li>
+                {% if 'user_id' in session %}
+                    {% if session.get('role') == 'user' %}
+                        <li><a href="{{ url_for('my_bookings') }}">Booking Saya</a></li>
+                    {% endif %}
+                    {% if session.get('role') == 'admin' %}
+                        <li><a href="{{ url_for('add_place') }}">Tambah Tempat</a></li>
+                        <li><a href="{{ url_for('admin_bookings') }}">Kelola Booking</a>
+                    {% endif %}
+                    <li><a href="{{ url_for('logout') }}">Logout ({{ session['username'] }})</a></li>
+                {% else %}
+                    <li><a href="{{ url_for('login') }}">Login</a></li>
+                    <li><a href="{{ url_for('register') }}">Register</a></li>
+                {% endif %}
+            </ul>
+        </nav>
+    </header>
+
+    <div class="container">
+        <main>
+            {% block content %}{% endblock %}
+        </main>
+    </div>
+
+    <footer>
+        <p>&copy; {{ datetime.datetime.now().year }} Aplikasi Booking Tempat Wisata.</p>
+    </footer>
+
+    {# --- STRUKTUR MODAL BARU --- #}
+    <div id="alertModal" class="modal">
+        <div class="modal-content">
+            <h3 id="modalTitle">Pemberitahuan</h3>
+            <p id="modalMessage"></p>
+            <div class="modal-actions">
+                <button class="btn" id="modalOkBtn">OK</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="confirmModal" class="modal">
+        <div class="modal-content">
+            <h3 id="confirmModalTitle">Konfirmasi</h3>
+            <p id="confirmModalMessage"></p>
+            <div class="modal-actions">
+                <button class="btn confirm-yes-btn" id="confirmYesBtn">Ya</button>
+                <button class="btn confirm-no-btn" id="confirmNoBtn">Tidak</button>
+            </div>
+        </div>
+    </div>
+    {# --- AKHIR STRUKTUR MODAL --- #}
+
+    <script>
+        // Fungsi untuk menampilkan modal alert
+        function showAlert(title, message, callback = null) {
+            document.getElementById('modalTitle').innerText = title;
+            document.getElementById('modalMessage').innerText = message;
+            document.getElementById('alertModal').style.display = 'flex'; // Gunakan flex untuk centering
+            
+            const okBtn = document.getElementById('modalOkBtn');
+            okBtn.onclick = () => {
+                document.getElementById('alertModal').style.display = 'none';
+                if (callback) callback();
+            };
+        }
+
+        // Fungsi untuk menampilkan modal konfirmasi
+        function showConfirm(title, message, onConfirm, onCancel = null) {
+            document.getElementById('confirmModalTitle').innerText = title;
+            document.getElementById('confirmModalMessage').innerText = message;
+            document.getElementById('confirmModal').style.display = 'flex'; // Gunakan flex untuk centering
+
+            const yesBtn = document.getElementById('confirmYesBtn');
+            const noBtn = document.getElementById('confirmNoBtn');
+
+            yesBtn.onclick = () => {
+                document.getElementById('confirmModal').style.display = 'none';
+                onConfirm();
+            };
+
+            noBtn.onclick = () => {
+                document.getElementById('confirmModal').style.display = 'none';
+                if (onCancel) onCancel();
+            };
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // Tangani Flash Messages dari Flask
+            const flaskMessages = [
+                {% for category, message in get_flashed_messages(with_categories=true) %}
+                    { category: '{{ category }}', message: '{{ message | safe }}' },
+                {% endfor %}
+            ];
+
+            if (flaskMessages.length > 0) {
+                // Tampilkan pesan pertama dari Flask di modal alert
+                const msg = flaskMessages[0];
+                showAlert('Pemberitahuan', msg.message);
+                // Jika ada lebih dari satu pesan, Anda bisa menampilkannya secara berurutan
+                // atau hanya pesan yang paling penting. Untuk kasus ini, kita ambil yang pertama.
+            }
+
+            // --- Mengganti semua confirm() dan alert() bawaan JavaScript ---
+
+            // Untuk link Hapus Tempat Wisata (admin) di places_list.html
+            document.querySelectorAll('.place-card-actions .delete-btn').forEach(link => {
+                link.onclick = function(event) {
+                    event.preventDefault(); // Mencegah navigasi default
+                    const url = this.href;
+                    showConfirm(
+                        'Konfirmasi Hapus',
+                        'Apakah Anda yakin ingin menghapus tempat wisata ini? Semua booking terkait juga akan dihapus.',
+                        () => { window.location.href = url; }
+                    );
+                };
+            });
+
+            // Untuk link Hapus Booking (pengguna) di my_bookings.html
+            document.querySelectorAll('.data-table .delete-btn').forEach(link => {
+                link.onclick = function(event) {
+                    event.preventDefault();
+                    const url = this.href;
+                    showConfirm(
+                        'Konfirmasi Pembatalan Booking',
+                        'Apakah Anda yakin ingin membatalkan booking ini?',
+                        () => { window.location.href = url; }
+                    );
+                };
+            });
+
+            // Untuk link Konfirmasi/Batal Booking (admin) di admin_bookings.html
+            document.querySelectorAll('.data-table .actions .btn').forEach(link => {
+                if (link.innerText === 'Konfirmasi' || link.innerText === 'Batal') {
+                    link.onclick = function(event) {
+                        event.preventDefault();
+                        const url = this.href;
+                        const action = this.innerText;
+                        showConfirm(
+                            `Konfirmasi ${action}`,
+                            `Apakah Anda yakin ingin ${action.toLowerCase()} booking ini?`,
+                            () => { window.location.href = url; }
+                        );
+                    };
+                }
+            });
+
+            // Untuk validasi Tahun Masuk di index.html (jika masih menggunakan alert)
+            // Asumsi: form id mahasiswaForm di index.html dan add_edit_place.html
+            const formsWithYearValidation = document.querySelectorAll('#mahasiswaForm, form[enctype="multipart/form-data"]'); // Add form for admin
+            formsWithYearValidation.forEach(form => {
+                form.addEventListener('submit', function(event) {
+                    const tahunMasukInput = form.querySelector('#tahun_masuk');
+                    if (tahunMasukInput) {
+                        const tahunMasuk = parseInt(tahunMasukInput.value);
+                        const currentYear = new Date().getFullYear();
+
+                        if (tahunMasuk > currentYear) {
+                            event.preventDefault(); // Mencegah form disubmit
+                            showAlert('Validasi Input', 'Tahun Masuk tidak boleh lebih dari tahun saat ini (' + currentYear + ').');
+                        }
+                    }
+                });
+            });
+
+        });
+    </script>
+</body>
+</html>
