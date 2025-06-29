@@ -7,7 +7,8 @@ import os
 from werkzeug.utils import secure_filename
 
 app = Flask(__name__)
-app.secret_key = 'supersecretbookingappkey'
+app.secret_key = os.getenv('SECRET_KEY', 'hidhithere2172')
+
 
 # --- Daftarkan datetime ke Jinja2 globals ---
 app.jinja_env.globals.update(datetime=datetime)
